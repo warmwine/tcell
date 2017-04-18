@@ -722,6 +722,7 @@ func (s *cScreen) draw() {
 				wcs = buf[0:0]
 				lstyle = Style(-1)
 				if !dirty {
+					x += width - 1
 					continue
 				}
 			}
@@ -740,7 +741,9 @@ func (s *cScreen) draw() {
 			if len(combc) != 0 {
 				wcs = append(wcs, utf16.Encode(combc)...)
 			}
-			s.cells.SetDirty(x, y, false)
+			for i := 0; i < width; i++ {
+				s.cells.SetDirty(x+i, y, false)
+			}
 			x += width - 1
 		}
 		s.writeString(lx, ly, lstyle, wcs)
